@@ -1,6 +1,0 @@
-﻿- User podaje dane karty, następnie pin -> weryfikacja
-- User może wypłacić pieniądze
-- User może wpłacić pieniądze
-- User sprawdza stan konta
-- User robi przelew na inne konto
-- User zakłada konto
