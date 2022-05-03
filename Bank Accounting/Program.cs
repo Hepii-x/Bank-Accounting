@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Data.SqlClient;
 
 namespace Bank_Accounting
 {
@@ -6,6 +7,7 @@ namespace Bank_Accounting
     {
         static void Main(string[] args)
         {
+            
             string loggedIn = DoLogin();
             if (loggedIn == "0")
                 Environment.Exit(0);
@@ -23,7 +25,7 @@ namespace Bank_Accounting
             Console.ReadLine();
         }
 
-        static string DoLogin()
+        static string DoLoin()
         {
             Console.WriteLine("Podaj numer karty: ");
             string cardNumber = Console.ReadLine();
@@ -84,7 +86,7 @@ namespace Bank_Accounting
 
             float moneyLeft = accountMoney - moneyToWithdraw;
 
-            if (moneyLeft <= 0)
+            if (moneyLeft < 0)
                 Console.WriteLine("Wprowadzona kwota jest za wysoka!");
             else
                 Console.WriteLine("Pomyślnie wypłacono " + moneyToWithdraw + " PLN. Pozostała kwota " + moneyLeft + " PLN.");
