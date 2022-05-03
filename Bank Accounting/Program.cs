@@ -25,7 +25,7 @@ namespace Bank_Accounting
             Console.ReadLine();
         }
 
-        static string DoLoin()
+        static string DoLogin()
         {
             Console.WriteLine("Podaj numer karty: ");
             string cardNumber = Console.ReadLine();
