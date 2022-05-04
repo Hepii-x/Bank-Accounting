@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.Data.SqlClient;
+using System.Data.SQLite;
 
 namespace Bank_Accounting
-{
+{    
     class Program
     {
         static void Main(string[] args)
         {
-            
+            Database db = CreateDatabase();
             string loggedIn = DoLogin();
             if (loggedIn == "0")
                 Environment.Exit(0);
@@ -23,6 +23,23 @@ namespace Bank_Accounting
                 DepositMoney(loggedIn);
 
             Console.ReadLine();
+        }
+
+
+        static Database CreateDatabase()
+        {
+            Database databaseObject = new Database();
+            string query = "SELECT name FROM sqlite_master WHERE name = 'users'";
+            SQLiteCommand cmd = new SQLiteCommand(query, databaseObject.myConnection);
+            databaseObject.myConnection.Open();
+            var test = cmd.ExecuteScalar();
+            if (test == null)
+            {
+                Console.WriteLine("Not Exists");
+            }
+                
+            
+            return databaseObject;
         }
 
         static string DoLogin()
