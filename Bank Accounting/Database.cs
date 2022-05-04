@@ -20,6 +20,17 @@ namespace Bank_Accounting
                 SQLiteConnection.CreateFile("users.sqlite3");
                 Console.WriteLine("Database created!");
             }
+            string query = "SELECT name FROM sqlite_master WHERE name = 'users'";
+            SQLiteCommand cmd = new SQLiteCommand(query, myConnection);
+            myConnection.Open();
+            var test = cmd.ExecuteScalar();
+            if (test == null)
+            {
+                Console.WriteLine("Database Table not found");
+                Console.ReadLine();
+                System.Environment.Exit(0);
+            }
+
         }
     }
 }

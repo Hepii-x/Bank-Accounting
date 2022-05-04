@@ -7,38 +7,34 @@ namespace Bank_Accounting
     {
         static void Main(string[] args)
         {
-            Database db = CreateDatabase();
-            string loggedIn = DoLogin();
-            if (loggedIn == "0")
-                Environment.Exit(0);
 
-            Console.WriteLine("Stan konta: " + GetMoneyDeposited(loggedIn) + " PLN");
-            Console.WriteLine("1. Wypłać pieniądze");
-            Console.WriteLine("2. Wpłać pieniądze");
+            Database db = OpenConnection();
 
-            string choice = Console.ReadLine();
-            if (choice == "1")
-                WithdrawMoney(loggedIn);
-            else if (choice == "2")
-                DepositMoney(loggedIn);
+            Console.WriteLine("1. Zaloguj");
+            Console.WriteLine("2. Zarejestruj");
+
+            string choice1 = Console.ReadLine();
+
+            if (choice1 == "1")
+            {
+                string uniqueId = DoLogin();
+                LoggedIn(uniqueId);
+            }
+            else if (choice1 == "2")
+                RegisterNewUser();
+            else
+                System.Environment.Exit(0);
+
+
+            
 
             Console.ReadLine();
         }
 
 
-        static Database CreateDatabase()
+        static Database OpenConnection()
         {
             Database databaseObject = new Database();
-            string query = "SELECT name FROM sqlite_master WHERE name = 'users'";
-            SQLiteCommand cmd = new SQLiteCommand(query, databaseObject.myConnection);
-            databaseObject.myConnection.Open();
-            var test = cmd.ExecuteScalar();
-            if (test == null)
-            {
-                Console.WriteLine("Not Exists");
-            }
-                
-            
             return databaseObject;
         }
 
@@ -66,6 +62,21 @@ namespace Bank_Accounting
                 return "unique-id";
             }
 
+        }
+        static void LoggedIn(string uniqueId)
+        {
+            if (uniqueId == "0")
+                Environment.Exit(0);
+
+            Console.WriteLine("Stan konta: " + GetMoneyDeposited(uniqueId) + " PLN");
+            Console.WriteLine("1. Wypłać pieniądze");
+            Console.WriteLine("2. Wpłać pieniądze");
+
+            string choice2 = Console.ReadLine();
+            if (choice2 == "1")
+                WithdrawMoney(uniqueId);
+            else if (choice2 == "2")
+                DepositMoney(uniqueId);
         }
 
         static bool Verification (string cardNumber, string cvcNumber, string pinNumber)
@@ -117,6 +128,15 @@ namespace Bank_Accounting
             accountMoney += moneyToDeposit;
 
             Console.WriteLine("Wpłacono " + moneyToDeposit + " PLN. Aktualny stan konta to " + accountMoney + " PLN.");
+        }
+
+        static void RegisterNewUser()
+        {
+            Console.WriteLine("Imię: ");
+            string name = Console.ReadLine();
+            Console.WriteLine("Nazwisko: ");
+            string surname = Console.ReadLine();
+            Console.WriteLine("Generuje dane!");
         }
     }
 }
