@@ -8,3 +8,5 @@
 	"money"	REAL,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
+
+CREATE TABLE users (id INT PRIMARY KEY AUTOINCREMENT, name TEXT, surname TEXT, card-number TEXT UNIQUE, card-cvc TEXT, card-pin TEXT, money REAL);
