@@ -26,9 +26,11 @@ namespace Bank_Accounting
             var test = cmd.ExecuteScalar();
             if (test == null)
             {
-                Console.WriteLine("Database Table not found");
-                Console.ReadLine();
-                System.Environment.Exit(0);
+                Console.WriteLine("Database table not found");
+                query = "CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, surname TEXT, card_number TEXT UNIQUE, card_cvc TEXT, card_pin TEXT, money REAL)";
+                cmd = new SQLiteCommand(query, myConnection);
+                cmd.ExecuteNonQuery();
+                Console.WriteLine("Created database table");
             }
         }
     }
