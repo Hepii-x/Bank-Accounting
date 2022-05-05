@@ -10,7 +10,10 @@ namespace Bank_Accounting
         {
             Console.WriteLine("KEKW");
             Console.WriteLine("Gigachad");
-            new TestingFunc();
+            DBFunctions db = new DBFunctions();
+
+            //db.InsertDB();
+            db.GetFromDB();
 
             Console.ReadLine();
         }
