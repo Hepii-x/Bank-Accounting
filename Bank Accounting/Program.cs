@@ -5,11 +5,11 @@ namespace Bank_Accounting
 {    
     class Program
     {
+        public Database db = new Database();
+
         static void Main(string[] args)
         {
-
-            Database db = OpenConnection();
-
+            
             Console.WriteLine("1. Zaloguj");
             Console.WriteLine("2. Zarejestruj");
 
@@ -29,13 +29,6 @@ namespace Bank_Accounting
             
 
             Console.ReadLine();
-        }
-
-
-        static Database OpenConnection()
-        {
-            Database databaseObject = new Database();
-            return databaseObject;
         }
 
         static string DoLogin()
@@ -79,8 +72,10 @@ namespace Bank_Accounting
                 DepositMoney(uniqueId);
         }
 
-        static bool Verification (string cardNumber, string cvcNumber, string pinNumber)
+        bool Verification (string cardNumber, string cvcNumber, string pinNumber)
         {
+            string query = "SELECT name FROM sqlite_master WHERE name = 'users'";
+            SQLiteCommand cmd = new SQLiteCommand(query, );
             if (cardNumber == "1111222233334444")
             {
                 if (cvcNumber == "123")

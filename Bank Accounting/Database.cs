@@ -10,9 +10,9 @@ namespace Bank_Accounting
 {
     class Database
     {
-        public SQLiteConnection myConnection;
+        public static SQLiteConnection myConnection;
 
-        public Database()
+        static Database()
         {
             myConnection = new SQLiteConnection("Data Source=users.sqlite3");
             if (!File.Exists("./users.sqlite3"))
@@ -32,7 +32,6 @@ namespace Bank_Accounting
                 cmd.ExecuteNonQuery();
                 Console.WriteLine("Created database table");
             }
-
         }
     }
 }
