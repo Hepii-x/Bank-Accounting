@@ -36,7 +36,7 @@ namespace Bank_Accounting
                 db.Register(name, surname, money);
                 Console.WriteLine("Zarejestrowano! Zaloguj ponownie.");
             }
-            else
+            else // TEST AREA
             {
                 var rand = new Random();
                 string cardNumber1 = rand.Next(00000000, 99999999).ToString();
