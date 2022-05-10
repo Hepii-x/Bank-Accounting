@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Data.SQLite;
 
 namespace Bank_Accounting
@@ -7,8 +6,6 @@ namespace Bank_Accounting
     internal class DBFunctions
     {
         Database db = new Database();
-        SQLiteDataReader data2;
-        private double secondMoney;
 
         public void Register(string name, string surname, float money)
         {
@@ -28,7 +25,7 @@ namespace Bank_Accounting
                 SQLiteCommand cmd = new SQLiteCommand(query, db.myConnection);
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception ex)
+            catch
             {
                 goto Start;
             }
@@ -49,8 +46,6 @@ namespace Bank_Accounting
             catch (Exception ex)
             {
                 Console.WriteLine("Złe dane, zacznij od nowa");
-                Console.WriteLine(ex);
-                Console.ReadLine();
                 return false;
             }
         }
@@ -88,7 +83,6 @@ namespace Bank_Accounting
             catch (Exception ex)
             {
                 Console.WriteLine("Podaj poprawną kwotę!");
-                Console.WriteLine(ex);
                 goto Start;
             }
         }
@@ -116,7 +110,6 @@ namespace Bank_Accounting
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
                 Console.WriteLine("Podaj poprawną kwotę!");
                 goto Start;
             }
@@ -129,58 +122,61 @@ namespace Bank_Accounting
             Console.WriteLine("Podaj numer karty na którą chcesz przelać: ");
             string cardNumber2 = Console.ReadLine();
             Console.WriteLine("Podaj kwotę przelewu: ");
-            double yourMoney = double.Parse(Console.ReadLine());
-
-            // Check if have money
-            string query1 = "SELECT money FROM users WHERE card_number = '" + cardNumber1 + "'";
-            SQLiteCommand cmd1 = new SQLiteCommand(query1, db.myConnection);
-            SQLiteDataReader data1 = cmd1.ExecuteReader();
-            data1.Read();
-            double actualMoney = (double)data1["money"];
-            double moneyLeft = actualMoney - yourMoney;
-            if (yourMoney > actualMoney)
-            {
-                Console.WriteLine("Nie wystarczająca ilość środków");
-                goto Start;
-            }
-            //
-
-            // Check if user exists
-            string query2 = "SELECT name, surname, money FROM users WHERE card_number = '" + cardNumber2 + "'";
-            SQLiteCommand cmd2 = new SQLiteCommand(query2, db.myConnection);
             try
             {
-                data2 = cmd2.ExecuteReader();
+                double yourMoney = double.Parse(Console.ReadLine());
+
+                // Check if have money
+                string query1 = "SELECT money FROM users WHERE card_number = '" + cardNumber1 + "'";
+                SQLiteCommand cmd1 = new SQLiteCommand(query1, db.myConnection);
+                SQLiteDataReader data1 = cmd1.ExecuteReader();
+                data1.Read();
+                double actualMoney = (double)data1["money"];
+                double moneyLeft = actualMoney - yourMoney;
+                if (yourMoney > actualMoney)
+                {
+                    Console.WriteLine("Nie wystarczająca ilość środków");
+                    goto Start;
+                }
+                //
+
+                // Check if user exists
+                string query2 = "SELECT name, surname, money FROM users WHERE card_number = '" + cardNumber2 + "'";
+                SQLiteCommand cmd2 = new SQLiteCommand(query2, db.myConnection);
+
+                SQLiteDataReader data2 = cmd2.ExecuteReader();
                 data2.Read();
                 double secondMoney = (double)data2["money"];
+
+                //
+
+
+
+
+                // Transfer to another user
+
+                double newMoney = secondMoney + yourMoney;
+                newMoney = Math.Round(newMoney, 2);
+
+                // Withdraw money from user
+                moneyLeft = Math.Round(moneyLeft, 2);
+                string query3 = "UPDATE users SET money = '" + moneyLeft + "' WHERE card_number = '" + cardNumber1 + "'";
+                SQLiteCommand cmd3 = new SQLiteCommand(query3, db.myConnection);
+                cmd3.ExecuteNonQuery();
+
+                string query4 = "UPDATE users SET money = '" + newMoney + "' WHERE card_number = '" + cardNumber2 + "'";
+                SQLiteCommand cmd4 = new SQLiteCommand(query4, db.myConnection);
+                cmd4.ExecuteNonQuery();
+                Console.WriteLine("Przelano: " + yourMoney + " dla " + data2["name"] + " " + data2["surname"]);
+                //
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                Console.WriteLine(ex);
                 Console.WriteLine("Dane niepoprawne!");
                 goto Start;
             }
-            //
 
-            
-            
 
-            // Transfer to another user
-            
-            double newMoney = secondMoney + yourMoney;
-            newMoney = Math.Round(newMoney, 2);
-
-            // Withdraw money from user
-            moneyLeft = Math.Round(moneyLeft, 2);
-            string query3 = "UPDATE users SET money = '" + moneyLeft + "' WHERE card_number = '" + cardNumber1 + "'";
-            SQLiteCommand cmd3 = new SQLiteCommand(query3, db.myConnection);
-            cmd3.ExecuteNonQuery();
-
-            string query4 = "UPDATE users SET money = '" + newMoney + "' WHERE card_number = '" + cardNumber2 + "'";
-            SQLiteCommand cmd4 = new SQLiteCommand(query4, db.myConnection);
-            cmd4.ExecuteNonQuery();
-            Console.WriteLine("Przelano: " + newMoney + " dla " + data2["name"] + " " + data2["surname"]);
-            //
 
 
         }
