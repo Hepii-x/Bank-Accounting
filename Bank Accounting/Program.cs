@@ -6,6 +6,7 @@ namespace Bank_Accounting
     {
         static void Main(string[] args)
         {
+            bool repeat = false;
             DBFunctions db = new DBFunctions();
             Start:
             Console.WriteLine("1. Zaloguj");
@@ -21,28 +22,34 @@ namespace Bank_Accounting
                 Console.WriteLine("Podaj kod pin karty: ");
                 string pinNumber = Console.ReadLine();
 
+                Start2:
                 bool loggedIn = db.Login(cardNumber, cvcNumber, pinNumber);
                 if (loggedIn)
                 {
-                Start2:
                     Console.WriteLine("1. Wypłata środków\n2. Wpłata środków\n3. Przelew");
                     string choice2 = Console.ReadLine();
                     if (choice2 == "1")
                     {
                         db.Withdraw(cardNumber);
+                        repeat = Continue();
                     }
                     else if (choice2 == "2")
                     {
                         db.Deposit(cardNumber);
+                        repeat = Continue();
                     }
                     else if (choice2 == "3")
                     {
-                        db.TransferMoney(cardNumber);                    }
+                        db.TransferMoney(cardNumber);
+                        repeat = Continue();
+                    }
                     else
                     {
                         Console.WriteLine("Nie wybrano opcji!");
                         goto Start2;
                     }
+                    if (repeat)
+                        goto Start2;
                 }
                 else if (!loggedIn)
                     goto Start;
@@ -76,6 +83,20 @@ namespace Bank_Accounting
                 Console.WriteLine("Nie wybrano opcji!");
                 goto Start;
             }
+        }
+
+        static bool Continue()
+        {
+            Console.WriteLine("Kontyunować? T/N");
+            string choice = Console.ReadLine().ToLower();
+            if (choice == "t")
+                return true;
+            else
+            {
+                System.Environment.Exit(0);
+                return false;
+            }
+
         }
 
 

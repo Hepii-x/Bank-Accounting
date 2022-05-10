@@ -73,9 +73,8 @@ namespace Bank_Accounting
                 
                 double moneyLeft = actualMoney - money;
                 moneyLeft = Math.Round(moneyLeft, 2);
-                Console.WriteLine(moneyLeft);
 
-                if (money <= 0)
+                if (moneyLeft <= 0)
                 {
                     Console.WriteLine("Nie posiadasz wystarczających środków na koncie!");
                 }
