@@ -37,6 +37,11 @@ namespace Bank_Accounting
                         db.Deposit(cardNumber);
                         Console.WriteLine("Done");
                     }
+                    else if (choice2 == "3")
+                    {
+                        db.TransferMoney(cardNumber);
+                        Console.WriteLine("Done");
+                    }
                     
                 }
 
