@@ -33,7 +33,7 @@ namespace Bank_Accounting
             
         }
 
-        public void Login(string cardNumber, string cvcNumber, string pinNumber)
+        public bool Login(string cardNumber, string cvcNumber, string pinNumber)
         {
             try
             {
@@ -41,14 +41,54 @@ namespace Bank_Accounting
                 SQLiteCommand cmd = new SQLiteCommand(query, db.myConnection);
                 SQLiteDataReader dataX = cmd.ExecuteReader();
                 dataX.Read();
-                Console.WriteLine(dataX["name"] + " " + dataX["surname"] + " " + dataX["money"]);
+                Console.WriteLine("Witaj "+ dataX["name"]+ " "+ dataX["surname"] +"\n Posiadasz "+ dataX["money"] +"PLN środków na koncie");
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Złe dane, zacznij od nowa");
+                Console.WriteLine(ex);
                 Console.ReadLine();
+                return false;
             }
-            
+        }
+
+        public void Withdraw(string cardNumber)
+        {
+            Console.Clear();
+            Start:
+            Console.WriteLine("Jaką kwotę chcesz wypłacić?");
+            try
+            {
+                float money = float.Parse(Console.ReadLine());
+                // Get money from DB
+                string query = "SELECT money FROM users WHERE card_number = '" + cardNumber + "'";
+                SQLiteCommand cmd = new SQLiteCommand(query, db.myConnection);
+                SQLiteDataReader data = cmd.ExecuteReader();
+                data.Read();
+                double actualMoney = (double)data["money"];
+                
+                double moneyLeft = actualMoney - money;
+                moneyLeft = Math.Round(moneyLeft, 2);
+                Console.WriteLine(moneyLeft);
+                if (money <= 0)
+                {
+                    Console.WriteLine("Nie posiadasz wystarczających środków na koncie!");
+                }
+                else
+                {
+                    string query2 = "UPDATE users SET money = '"+ moneyLeft +"' WHERE card_number = '"+ cardNumber +"'";
+                    SQLiteCommand cmd2 = new SQLiteCommand(query2, db.myConnection);
+                    cmd2.ExecuteNonQuery();
+                    Console.WriteLine("Wypłacono: " + money);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Podaj poprawną kwotę!");
+                Console.WriteLine(ex);
+                goto Start;
+            }
 
         }
     }

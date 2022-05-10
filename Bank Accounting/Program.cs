@@ -22,7 +22,18 @@ namespace Bank_Accounting
                 Console.WriteLine("Podaj kod pin karty: ");
                 string pinNumber = Console.ReadLine();
 
-                db.Login(cardNumber, cvcNumber, pinNumber);
+                bool loggedIn = db.Login(cardNumber, cvcNumber, pinNumber);
+                if (loggedIn)
+                {
+                    Console.WriteLine("1. Wypłata środków\n2. Wpłata środków\n3. Przelew");
+                    string choice2 = Console.ReadLine();
+                    if (choice2 == "1")
+                    {
+                        db.Withdraw(cardNumber);
+                        Console.WriteLine("Done");
+                    }
+                    
+                }
 
             }
             else if (choice == "2")
