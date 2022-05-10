@@ -32,6 +32,11 @@ namespace Bank_Accounting
                         db.Withdraw(cardNumber);
                         Console.WriteLine("Done");
                     }
+                    else if (choice2 == "2")
+                    {
+                        db.Deposit(cardNumber);
+                        Console.WriteLine("Done");
+                    }
                     
                 }
 

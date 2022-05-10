@@ -89,7 +89,35 @@ namespace Bank_Accounting
                 Console.WriteLine(ex);
                 goto Start;
             }
+        }
 
+        public void Deposit(string cardNumber)
+        {
+            Console.Clear();
+            Start:
+            Console.WriteLine("Jaką kwotę chcesz wpłacić?");
+            try
+            {
+                float money = float.Parse(Console.ReadLine());
+                string query = "SELECT money FROM users WHERE card_number = '" + cardNumber + "'";
+                SQLiteCommand cmd = new SQLiteCommand(query, db.myConnection);
+                SQLiteDataReader data = cmd.ExecuteReader();
+                data.Read();
+                double moneyLeft = (double)data["money"];
+                double actualMoney = money + moneyLeft;
+                actualMoney = Math.Round(actualMoney, 2);
+
+                string query2 = "UPDATE users SET money = '" + actualMoney + "' WHERE card_number = '" + cardNumber + "'";
+                SQLiteCommand cmd2 = new SQLiteCommand(query2, db.myConnection);
+                cmd2.ExecuteNonQuery();
+                Console.WriteLine("Wpłacono: " + money);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Console.WriteLine("Podaj poprawną kwotę!");
+                goto Start;
+            }
         }
     }
 }
