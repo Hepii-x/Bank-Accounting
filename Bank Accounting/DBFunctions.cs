@@ -22,7 +22,7 @@ namespace Bank_Accounting
 
             try
             {
-                string query = "INSERT INTO users (name, surname, card_number, card_cvc, card_pin, money) VALUES ('" + name + "', '" + surname + "', '"+ cardNumber +"', '" + cvcNumber + "', '" + pinNumber + "', '" + money + "')";
+                string query = $"INSERT INTO users (name, surname, card_number, card_cvc, card_pin, money) VALUES ('{name}', '{surname}', '{cardNumber}', '{cvcNumber}', '{pinNumber}', '{money}')";
                 SQLiteCommand cmd = new SQLiteCommand(query, db.myConnection);
                 cmd.ExecuteNonQuery();
             }
@@ -41,11 +41,11 @@ namespace Bank_Accounting
         {
             try
             {
-                string query = "SELECT name, surname, money FROM users WHERE card_number = '" + cardNumber + "' AND card_cvc = '" + cvcNumber + "' AND card_pin = '" + pinNumber + "'";
+                string query = $"SELECT name, surname, money FROM users WHERE card_number = '{cardNumber}' AND card_cvc = '{cvcNumber}' AND card_pin = '{pinNumber}'";
                 SQLiteCommand cmd = new SQLiteCommand(query, db.myConnection);
                 SQLiteDataReader dataX = cmd.ExecuteReader();
                 dataX.Read();
-                Console.WriteLine("Witaj "+ dataX["name"]+ " "+ dataX["surname"] +"\n Posiadasz "+ dataX["money"] +"PLN środków na koncie");
+                Console.WriteLine($"Witaj {dataX["name"]} {dataX["surname"]}\nPosiadasz {dataX["money"]} PLN środków na koncie");
                 return true;
             }
             catch (Exception ex)
@@ -58,14 +58,14 @@ namespace Bank_Accounting
         public void Withdraw(string cardNumber)
         {
             Console.Clear();
-            Start:
+        Start:
             Console.WriteLine("Jaką kwotę chcesz wypłacić?");
 
             try
             {
                 // Get money from db
                 float money = float.Parse(Console.ReadLine());
-                string query = "SELECT money FROM users WHERE card_number = '" + cardNumber + "'";
+                string query = $"SELECT money FROM users WHERE card_number = '{cardNumber}'";
                 SQLiteCommand cmd = new SQLiteCommand(query, db.myConnection);
                 SQLiteDataReader data = cmd.ExecuteReader();
                 data.Read();
@@ -82,7 +82,7 @@ namespace Bank_Accounting
                 else
                 {
                     // Update money in db
-                    string query2 = "UPDATE users SET money = '"+ moneyLeft +"' WHERE card_number = '"+ cardNumber +"'";
+                    string query2 = $"UPDATE users SET money = '{moneyLeft}' WHERE card_number = '{cardNumber}'";
                     SQLiteCommand cmd2 = new SQLiteCommand(query2, db.myConnection);
                     cmd2.ExecuteNonQuery();
                     Console.WriteLine("Wypłacono: " + money);
@@ -98,14 +98,14 @@ namespace Bank_Accounting
         public void Deposit(string cardNumber)
         {
             Console.Clear();
-            Start:
+        Start:
             Console.WriteLine("Jaką kwotę chcesz wpłacić?");
 
             try
             {
                 // Get money from db
                 float money = float.Parse(Console.ReadLine());
-                string query = "SELECT money FROM users WHERE card_number = '" + cardNumber + "'";
+                string query = $"SELECT money FROM users WHERE card_number = '{cardNumber}'";
                 SQLiteCommand cmd = new SQLiteCommand(query, db.myConnection);
                 SQLiteDataReader data = cmd.ExecuteReader();
                 data.Read();
@@ -114,7 +114,7 @@ namespace Bank_Accounting
                 actualMoney = Math.Round(actualMoney, 2);
 
                 // Update money in db
-                string query2 = "UPDATE users SET money = '" + actualMoney + "' WHERE card_number = '" + cardNumber + "'";
+                string query2 = $"UPDATE users SET money = '{actualMoney}' WHERE card_number = '{cardNumber}'";
                 SQLiteCommand cmd2 = new SQLiteCommand(query2, db.myConnection);
                 cmd2.ExecuteNonQuery();
                 Console.WriteLine("Wpłacono: " + money);
@@ -139,7 +139,7 @@ namespace Bank_Accounting
                 double yourMoney = double.Parse(Console.ReadLine());
 
                 // Check if have money
-                string query1 = "SELECT money FROM users WHERE card_number = '" + cardNumber1 + "'";
+                string query1 = $"SELECT money FROM users WHERE card_number = '{cardNumber1}'";
                 SQLiteCommand cmd1 = new SQLiteCommand(query1, db.myConnection);
                 SQLiteDataReader data1 = cmd1.ExecuteReader();
                 data1.Read();
@@ -154,7 +154,7 @@ namespace Bank_Accounting
 
 
                 // Get second user data
-                string query2 = "SELECT name, surname, money FROM users WHERE card_number = '" + cardNumber2 + "'";
+                string query2 = $"SELECT name, surname, money FROM users WHERE card_number = '{cardNumber2}'";
                 SQLiteCommand cmd2 = new SQLiteCommand(query2, db.myConnection);
 
                 SQLiteDataReader data2 = cmd2.ExecuteReader();
@@ -165,14 +165,14 @@ namespace Bank_Accounting
                 newMoney = Math.Round(newMoney, 2);
                 // Change first user money in db
                 moneyLeft = Math.Round(moneyLeft, 2);
-                string query3 = "UPDATE users SET money = '" + moneyLeft + "' WHERE card_number = '" + cardNumber1 + "'";
+                string query3 = $"UPDATE users SET money = '{moneyLeft}' WHERE card_number = '{cardNumber1}'";
                 SQLiteCommand cmd3 = new SQLiteCommand(query3, db.myConnection);
                 cmd3.ExecuteNonQuery();
                 // Change second user money in db
-                string query4 = "UPDATE users SET money = '" + newMoney + "' WHERE card_number = '" + cardNumber2 + "'";
+                string query4 = $"UPDATE users SET money = '{newMoney}' WHERE card_number = '{cardNumber2}'";
                 SQLiteCommand cmd4 = new SQLiteCommand(query4, db.myConnection);
                 cmd4.ExecuteNonQuery();
-                Console.WriteLine("Przelano: " + yourMoney + " dla " + data2["name"] + " " + data2["surname"]);
+                Console.WriteLine($"Przelano: {yourMoney} dla {data2["name"]} {data2["surname"]}");
             }
             catch(Exception ex)
             {
