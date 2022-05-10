@@ -68,7 +68,6 @@ namespace Bank_Accounting
                 }
 
                 
-                Console.WriteLine("Zarejestrowano! Zaloguj ponownie.");
                 goto Start;
             }
             
