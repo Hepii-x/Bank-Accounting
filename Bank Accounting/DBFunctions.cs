@@ -30,7 +30,7 @@ namespace Bank_Accounting
             {
                 goto Start;
             }
-            Console.WriteLine($"Zarejestrowano!\nTwoje dane\nNumer karty: {cardNumber}\nKod cvc: {cvcNumber}\nKod pin: {pinNumber}");
+            Console.WriteLine($"Zarejestrowano!\nTwoje dane\nNumer karty: {cardNumber}\nKod cvc: {cvcNumber}\nKod pin: {pinNumber}\n");
             Console.WriteLine("Zaloguj ponownie.");
             
 
